@@ -1,0 +1,37 @@
+---
+modules:
+  jmeter:
+    detect-plugins: false
+  blazemeter:
+    # No token specified then the report is run as anonymous on BlazeMeter; creates a generic report name "external"
+    # BLZM Token creates the BlazeMeter report under the Default Account/WorkSpace per the specified project name
+    token: MY_TOKEN # <BLZM API Key ID>:<BLZM API Key Secret>
+    address: https://a.blazemeter.com # reporting service address
+    data-address: https://data.blazemeter.com  # data service address
+    browser-open: none  
+    timeout: 5s 
+    artifact-upload-size-limit: 5  
+    public-report: false  # set to true to create a public link to the report
+    report-name: ECIF_PostmanCollection_April 2020 Release
+    test: April2020Release_Test
+    project: April2020Release_Project
+    
+settings:
+  check-updates: false  # check for newer version of Taurus on startup
+  
+execution:
+- executor: jmeter
+  concurrency: 1  #3
+  ramp-up: 30s
+  hold-for: 3m30s
+  scenario: s1
+
+scenarios:
+  s1:
+    script: April2020Release.jmx
+  
+reporting:
+- module: blazemeter
+- module: final-stats
+  dump-xml: stats.xml
+  dump-csv: Jmeter_Result.csv
