@@ -1,0 +1,30 @@
+jobs:
+- name: perf-test
+  plan:
+  - get: repo
+  - config:
+      image_resource:
+        source:
+          repository: blazemeter/taurus
+        type: docker-image
+      inputs:
+      - name: repo
+      outputs:
+      - name: report
+      platform: linux
+      run:
+        args:
+        - -c
+        - |
+          set -e
+          cd repo
+          ls
+          bzt Taurus.yml
+          ls
+        path: sh
+    task: run-jmeter
+resources:
+- name: repo
+  source:
+    uri: git-url
+  type: git
